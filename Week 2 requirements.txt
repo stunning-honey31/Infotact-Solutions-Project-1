@@ -1,0 +1,37 @@
+Objective: Build and train a baseline CNN model to establish initial performance metrics.
+
+Model Design:
+- Construct a Custom CNN architecture:
+- Conv2D → ReLU → MaxPooling
+- Repeat for multiple layers
+- Flatten → Dense layers → Softmax output
+- Suggested architecture:
+- 3–4 convolutional blocks
+- 1–2 fully connected layers
+
+Training Configuration:
+- Loss Function: Categorical Crossentropy
+- Optimizer: Adam
+- Metrics: Accuracy
+- Batch Size: 32 or 64
+- Epochs: 15–30
+
+Overfitting Prevention:
+- Implement Dropout layers (0.3–0.5)
+- Use Early Stopping:
+- Monitor validation loss
+- Stop training if no improvement after N epochs
+
+Monitoring:
+- Plot:
+- Training vs Validation Accuracy
+- Training vs Validation Loss
+- Identify:
+- Overfitting (gap between train & val accuracy)
+- Underfitting (low accuracy overall)
+
+Deliverables:
+- Model script (`model.py`)
+- Training script (`train.py`)
+- Saved baseline model
+- Loss & accuracy plots

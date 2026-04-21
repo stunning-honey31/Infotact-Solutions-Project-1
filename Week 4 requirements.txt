@@ -1,0 +1,47 @@
+Objective: Evaluate model performance, build inference pipeline, and deploy the application.
+
+Model Evaluation:
+- Generate Confusion Matrix:
+- Identify misclassifications
+- Focus on visually similar diseases
+- Calculate:
+- Precision
+- Recall
+- F1-score
+
+Error Analysis:
+- Analyze incorrectly predicted images
+- Identify:
+- Dataset limitations
+- Model weaknesses
+
+Model Saving:
+- Save final trained model:
+- `.pt` (PyTorch)
+- Save class labels (`classes.json`)
+
+Inference Pipeline:
+- Create script (`predict.py`):
+- Input: image path
+- Output:
+  - Predicted class
+  - Confidence score
+- Steps:
+- Load model
+- Preprocess input image
+- Perform prediction
+
+Deployment:
+- Build Streamlit app:
+- Upload image interface
+- Display prediction + confidence
+- Ensure:
+  - Fast response time
+  - Clean UI
+
+Deliverables:
+- Confusion matrix plot
+- Final model file
+- Inference script
+- Streamlit app (`app.py`)
+- Fully documented GitHub repository

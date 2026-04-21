@@ -1,0 +1,11 @@
+Objective: Improve model performance using state-of-the-art architectures and tuning techniques.
+
+Fine-Tuning:
+- Unfreeze top layers of the base model
+- Retrain with a low learning rate
+
+Performance Improvement:
+- Compare with different CNN models
+- Baseline CNN
+- Target:
+- Achieve >90% validation accuracy

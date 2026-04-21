@@ -1,0 +1,302 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.screen{display:none;animation:fadeIn 0.4s ease}
+.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scan{from{top:0}to{top:calc(100% - 4px)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+@keyframes progress{from{width:0%}to{width:100%}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.slide-btn{cursor:pointer;background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:8px 18px;font-size:13px;color:var(--color-text-primary);transition:background 0.15s}
+.slide-btn:hover{background:var(--color-background-secondary)}
+.slide-btn.primary{background:#1D9E75;border-color:#1D9E75;color:#fff}
+.slide-btn.primary:hover{background:#0F6E56}
+.tag{display:inline-block;padding:3px 10px;border-radius:var(--border-radius-md);font-size:12px;font-weight:500}
+.tag-green{background:#EAF3DE;color:#3B6D11}
+.tag-red{background:#FCEBEB;color:#A32D2D}
+.tag-amber{background:#FAEEDA;color:#854F0B}
+.tag-blue{background:#E6F1FB;color:#185FA5}
+.tag-gray{background:#F1EFE8;color:#5F5E5A}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem}
+.progress-bar{height:6px;background:var(--color-background-secondary);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;background:#1D9E75;animation:progress 2s ease forwards}
+.nav-dots{display:flex;gap:6px;justify-content:center;margin-top:1.5rem}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--color-border-secondary);cursor:pointer;transition:background 0.2s}
+.dot.active{background:#1D9E75}
+</style>
+
+<h2 class="sr-only" text="center">Computer Vision for Crop Disease Detection — interactive project demo</h2>
+
+<div id="app" style="max-width:680px;margin:0 auto;padding:1rem 0">
+
+  <!-- SLIDE 1: Title -->
+  <div class="screen active" id="s1">
+    <div style="text-align:center;padding:2rem 1rem 1.5rem">
+      <div style="display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:50%;background:#EAF3DE;margin-bottom:1rem">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3B6D11" stroke-width="1.8" stroke-linecap="round"><path d="M12 2C6.5 2 4 6 4 10c0 4 4 8 8 8s8-4 8-8c0-4-2.5-8-8-8z"/><path d="M12 2v18M7 7l5 5M17 7l-5 5"/></svg>
+      </div>
+      <h1 style="font-size:22px;font-weight:500;color:var(--color-text-primary);margin-bottom:8px">Computer Vision for<br>Crop Disease Detection</h1>
+      <p style="font-size:14px;color:var(--color-text-secondary);line-height:1.6;max-width:400px;margin:0 auto 1.5rem">An AI-powered system that detects crop diseases from leaf images using deep learning and computer vision.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:1.5rem">
+        <span class="tag tag-green">Python</span>
+        <span class="tag tag-blue">TensorFlow / Keras</span>
+        <span class="tag tag-amber">OpenCV</span>
+        <span class="tag tag-gray">CNN / Transfer Learning</span>
+      </div>
+      <button class="slide-btn primary" onclick="go(2)">Watch Demo ›</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: Problem Statement -->
+  <div class="screen" id="s2">
+    <p style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:1rem;letter-spacing:0.05em">PROBLEM STATEMENT</p>
+    <h2 style="font-size:18px;font-weight:500;margin-bottom:1rem">Why does this matter?</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.25rem">
+      <div class="card">
+        <div style="font-size:24px;font-weight:500;color:#E24B4A;margin-bottom:4px">10–16%</div>
+        <div style="font-size:12px;color:var(--color-text-secondary)">annual global crop loss due to diseases</div>
+      </div>
+      <div class="card">
+        <div style="font-size:24px;font-weight:500;color:#E24B4A;margin-bottom:4px">$220B</div>
+        <div style="font-size:12px;color:var(--color-text-secondary)">economic damage per year worldwide</div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:1rem">
+      <p style="font-size:13px;color:var(--color-text-secondary);line-height:1.7">Traditional diagnosis relies on expert visual inspection — costly, slow, and inaccessible to smallholder farmers. Early detection using AI can dramatically reduce crop losses.</p>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="slide-btn" onclick="go(1)">‹ Back</button>
+      <button class="slide-btn primary" onclick="go(3)">Solution ›</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: Architecture -->
+  <div class="screen" id="s3">
+    <p style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:1rem;letter-spacing:0.05em">SYSTEM ARCHITECTURE</p>
+    <h2 style="font-size:18px;font-weight:500;margin-bottom:1rem">How the model works</h2>
+    <div style="display:flex;align-items:center;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:1rem">
+      <div style="flex:1;min-width:90px;text-align:center">
+        <div style="background:#EAF3DE;border:0.5px solid #C0DD97;border-radius:var(--border-radius-md);padding:10px 6px">
+          <div style="font-size:11px;font-weight:500;color:#3B6D11">Input Image</div>
+          <div style="font-size:10px;color:#639922;margin-top:2px">Leaf photo</div>
+        </div>
+      </div>
+      <div style="color:var(--color-text-tertiary);font-size:14px">›</div>
+      <div style="flex:1;min-width:90px;text-align:center">
+        <div style="background:#E6F1FB;border:0.5px solid #B5D4F4;border-radius:var(--border-radius-md);padding:10px 6px">
+          <div style="font-size:11px;font-weight:500;color:#185FA5">Preprocessing</div>
+          <div style="font-size:10px;color:#378ADD;margin-top:2px">Resize, normalize</div>
+        </div>
+      </div>
+      <div style="color:var(--color-text-tertiary);font-size:14px">›</div>
+      <div style="flex:1;min-width:90px;text-align:center">
+        <div style="background:#EEEDFE;border:0.5px solid #CECBF6;border-radius:var(--border-radius-md);padding:10px 6px">
+          <div style="font-size:11px;font-weight:500;color:#534AB7">CNN Model</div>
+          <div style="font-size:10px;color:#7F77DD;margin-top:2px">Feature extraction</div>
+        </div>
+      </div>
+      <div style="color:var(--color-text-tertiary);font-size:14px">›</div>
+      <div style="flex:1;min-width:90px;text-align:center">
+        <div style="background:#FAEEDA;border:0.5px solid #FAC775;border-radius:var(--border-radius-md);padding:10px 6px">
+          <div style="font-size:11px;font-weight:500;color:#854F0B">Classifier</div>
+          <div style="font-size:10px;color:#BA7517;margin-top:2px">Softmax output</div>
+        </div>
+      </div>
+      <div style="color:var(--color-text-tertiary);font-size:14px">›</div>
+      <div style="flex:1;min-width:90px;text-align:center">
+        <div style="background:#EAF3DE;border:0.5px solid #C0DD97;border-radius:var(--border-radius-md);padding:10px 6px">
+          <div style="font-size:11px;font-weight:500;color:#3B6D11">Result</div>
+          <div style="font-size:10px;color:#639922;margin-top:2px">Disease label</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem">
+      <div class="card">
+        <div style="font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px">Dataset</div>
+        <div style="font-size:12px;color:var(--color-text-secondary)">PlantVillage — 54,000+ annotated leaf images across 26 diseases</div>
+      </div>
+      <div class="card">
+        <div style="font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px">Model</div>
+        <div style="font-size:12px;color:var(--color-text-secondary)">CNN with transfer learning (VGG16 / ResNet backbone)</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="slide-btn" onclick="go(2)">‹ Back</button>
+      <button class="slide-btn primary" onclick="go(4)">Live Demo ›</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Live Demo Simulation -->
+  <div class="screen" id="s4">
+    <p style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:1rem;letter-spacing:0.05em">LIVE DEMO</p>
+    <h2 style="font-size:18px;font-weight:500;margin-bottom:1rem">Try the model</h2>
+    <div style="display:flex;gap:10px;margin-bottom:1rem;flex-wrap:wrap">
+      <div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:6px">Select a sample leaf:</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap" id="leaf-picker">
+          <button class="slide-btn" style="font-size:12px" onclick="runDemo('tomato_blight','Tomato Early Blight','Fungal','91.4%','#E24B4A','Apply fungicide. Remove infected leaves. Ensure proper spacing.')">🍅 Tomato</button>
+          <button class="slide-btn" style="font-size:12px" onclick="runDemo('corn_rust','Corn Common Rust','Fungal','87.2%','#E24B4A','Use resistant varieties. Apply mancozeb-based fungicide.')">🌽 Corn</button>
+          <button class="slide-btn" style="font-size:12px" onclick="runDemo('potato_healthy','Potato Healthy','None','97.8%','#639922','No disease detected. Crop looks healthy!')">🥔 Potato</button>
+          <button class="slide-btn" style="font-size:12px" onclick="runDemo('rice_blast','Rice Leaf Blast','Fungal','89.5%','#E24B4A','Drain fields. Apply tricyclazole. Avoid excess nitrogen.')">🌾 Rice</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="demo-area" class="card" style="min-height:160px;display:flex;align-items:center;justify-content:center">
+      <p style="font-size:13px;color:var(--color-text-tertiary)">← Select a crop above to run detection</p>
+    </div>
+
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:1rem">
+      <button class="slide-btn" onclick="go(3)">‹ Back</button>
+      <button class="slide-btn primary" onclick="go(5)">Results ›</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Model Performance -->
+  <div class="screen" id="s5">
+    <p style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:1rem;letter-spacing:0.05em">MODEL PERFORMANCE</p>
+    <h2 style="font-size:18px;font-weight:500;margin-bottom:1rem">Accuracy & metrics</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:1rem">
+      <div class="card" style="text-align:center">
+        <div style="font-size:22px;font-weight:500;color:#1D9E75">96.2%</div>
+        <div style="font-size:11px;color:var(--color-text-secondary)">Test accuracy</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div style="font-size:22px;font-weight:500;color:#378ADD">94.8%</div>
+        <div style="font-size:11px;color:var(--color-text-secondary)">Precision</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div style="font-size:22px;font-weight:500;color:#7F77DD">95.3%</div>
+        <div style="font-size:11px;color:var(--color-text-secondary)">F1 Score</div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:1rem">
+      <div style="font-size:13px;font-weight:500;margin-bottom:10px;color:var(--color-text-primary)">Per-class accuracy</div>
+      <div id="bars"></div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="slide-btn" onclick="go(4)">‹ Back</button>
+      <button class="slide-btn primary" onclick="go(6)">Conclusion ›</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Conclusion -->
+  <div class="screen" id="s6">
+    <p style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:1rem;letter-spacing:0.05em">CONCLUSION</p>
+    <h2 style="font-size:18px;font-weight:500;margin-bottom:1rem">Key takeaways</h2>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:1.25rem">
+      <div class="card" style="display:flex;gap:12px;align-items:flex-start">
+        <div style="width:28px;height:28px;border-radius:50%;background:#EAF3DE;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6D11" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:var(--color-text-primary)">High accuracy detection</div>
+          <div style="font-size:12px;color:var(--color-text-secondary)">96.2% accuracy across 26 disease classes using CNN + transfer learning</div>
+        </div>
+      </div>
+      <div class="card" style="display:flex;gap:12px;align-items:flex-start">
+        <div style="width:28px;height:28px;border-radius:50%;background:#E6F1FB;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:var(--color-text-primary)">Farmer-accessible solution</div>
+          <div style="font-size:12px;color:var(--color-text-secondary)">Simple image upload interface — no expert knowledge required</div>
+        </div>
+      </div>
+      <div class="card" style="display:flex;gap:12px;align-items:flex-start">
+        <div style="width:28px;height:28px;border-radius:50%;background:#EEEDFE;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#534AB7" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:var(--color-text-primary)">Real-world impact</div>
+          <div style="font-size:12px;color:var(--color-text-secondary)">Enables early intervention, reducing crop losses and improving food security</div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="background:#EAF3DE;border-color:#C0DD97;margin-bottom:1rem">
+      <p style="font-size:13px;color:#3B6D11;line-height:1.6">Built during internship at <strong>Infotact Solutions</strong> — leveraging computer vision to solve a critical agricultural problem.</p>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="slide-btn" onclick="go(5)">‹ Back</button>
+      <button class="slide-btn primary" onclick="go(1)">↺ Restart</button>
+    </div>
+  </div>
+
+  <!-- Dots nav -->
+  <div class="nav-dots" id="dots"></div>
+  <p style="text-align:center;font-size:11px;color:var(--color-text-tertiary);margin-top:6px" id="slide-count">1 / 6</p>
+</div>
+
+<script>
+let current = 1;
+const total = 6;
+
+const dotsEl = document.getElementById('dots');
+for(let i=1;i<=total;i++){
+  const d = document.createElement('div');
+  d.className = 'dot' + (i===1?' active':'');
+  d.onclick = ()=>go(i);
+  dotsEl.appendChild(d);
+}
+
+function go(n){
+  document.getElementById('s'+current).classList.remove('active');
+  document.getElementById('s'+n).classList.add('active');
+  current = n;
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===n-1));
+  document.getElementById('slide-count').textContent = n+' / '+total;
+  if(n===5) drawBars();
+}
+
+function runDemo(id, disease, type, conf, color, rec){
+  const area = document.getElementById('demo-area');
+  area.innerHTML = `
+    <div style="width:100%;text-align:center">
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px;animation:pulse 1s 3">Analyzing image...</div>
+      <div class="progress-bar" style="max-width:300px;margin:0 auto 12px"><div class="progress-fill"></div></div>
+    </div>`;
+  setTimeout(()=>{
+    const healthy = color === '#639922';
+    area.innerHTML = `
+      <div style="width:100%">
+        <div style="display:flex;align-items:flex-start;gap:14px">
+          <div style="width:70px;height:70px;border-radius:var(--border-radius-md);background:${healthy?'#EAF3DE':'#FCEBEB'};border:0.5px solid ${healthy?'#C0DD97':'#F7C1C1'};display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">${healthy?'🌿':'🍂'}</div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+              <span style="font-size:15px;font-weight:500;color:var(--color-text-primary)">${disease}</span>
+              <span class="tag ${healthy?'tag-green':'tag-red'}">${healthy?'Healthy':'Diseased'}</span>
+            </div>
+            <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px">Type: ${type} &nbsp;|&nbsp; Confidence: <strong style="color:${color}">${conf}</strong></div>
+            <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:8px 10px">
+              <div style="font-size:11px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px">Recommendation</div>
+              <div style="font-size:12px;color:var(--color-text-secondary)">${rec}</div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }, 1800);
+}
+
+function drawBars(){
+  const data=[
+    {label:'Tomato Blight',val:94},
+    {label:'Corn Rust',val:91},
+    {label:'Potato Late Blight',val:96},
+    {label:'Rice Blast',val:93},
+    {label:'Healthy leaves',val:98},
+  ];
+  const el = document.getElementById('bars');
+  el.innerHTML = data.map(d=>`
+    <div style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+        <span style="color:var(--color-text-secondary)">${d.label}</span>
+        <span style="font-weight:500;color:var(--color-text-primary)">${d.val}%</span>
+      </div>
+      <div class="progress-bar">
+        <div style="height:100%;border-radius:3px;background:#1D9E75;width:${d.val}%;transition:width 1s ease"></div>
+      </div>
+    </div>`).join('');
+}
+</script>

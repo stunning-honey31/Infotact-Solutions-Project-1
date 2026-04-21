@@ -1,0 +1,9 @@
+#installing project dependencies
+torch
+torchvision
+matplotlib
+scikit-learn
+pillow
+tqdm
+numpy
+streamlit

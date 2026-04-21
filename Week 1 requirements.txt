@@ -1,0 +1,29 @@
+Objective: Establishing a strong data foundation by acquiring the dataset, understanding its structure, and building a robust preprocessing pipeline.
+
+Dataset Acquisition:
+- Download a subset of the PlantVillage dataset from Kaggle or official sources.
+- Organize the dataset into a structured directory format:
+- Train
+- Test 
+- Val
+Ensure each class (disease category) has properly labeled folders.
+
+Exploratory Data Analysis (EDA):
+- Visualize 5–10 sample images per class using matplotlib.
+- Analyze:
+- Image resolution variations
+- Background noise and lighting conditions
+- Plot class distribution
+- Use bar charts to detect class imbalance
+- Identify challenges:
+- Similar-looking diseases
+- Class imbalance
+
+Preprocessing Pipeline:
+- Resize all images to a fixed size (224x224).
+- Normalize pixel values to range [0,1].
+- Apply preprocessing using OpenCV
+- torchvision.transforms
+- Implement:
+- Train / Validation / Test split (70/15/15)
+- Ensure no data leakage between sets
